@@ -1,0 +1,226 @@
+\hypertarget{command_8c}{}\doxysection{/home/avelten/\+Documents/\+Système d\textquotesingle{}exploitation avancé \mbox{[}A2 Ingénieur\mbox{]}/\+Mini-\/\+Shell/src/command.c File Reference}
+\label{command_8c}\index{/home/avelten/Documents/Système d\textquotesingle{}exploitation avancé \mbox{[}A2 Ingénieur\mbox{]}/Mini-\/Shell/src/command.c@{/home/avelten/Documents/Système d\textquotesingle{}exploitation avancé [A2 Ingénieur]/Mini-\/Shell/src/command.c}}
+
+
+Fichier contenant les fonctions liés à l\textquotesingle{}interpretation et l\textquotesingle{}éxécution des commandes.  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/stat.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../include/command.\+h\char`\"{}}\newline
+Include dependency graph for command.\+c\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} \mbox{\hyperlink{command_8c_a7557ac3ca87db8175e78674676546090}{create\+\_\+cmd}} ()
+\begin{DoxyCompactList}\small\item\em Fonction d\textquotesingle{}initialisation d\textquotesingle{}une nouvelle instance d\textquotesingle{}un objet pcmd\+\_\+t. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{command_8c_ad4acae431607fc93effe13568766a176}{destroy\+\_\+cmd}} (\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} cmd)
+\begin{DoxyCompactList}\small\item\em Fonction de suppression d\textquotesingle{}une instance d\textquotesingle{}un objet pcmd\+\_\+t. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{command_8c_a13a3bf817c2b04cb971237b35b6bb9a0}{count\+\_\+cmd}} (\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} cmd)
+\begin{DoxyCompactList}\small\item\em Fonction permettant de compter le nombre de commande dans un objet de type pcmd\+\_\+t. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{command_8c_a6f08b1a60107da667bea7f691b6b69e4}{translate\+\_\+cmd}} (\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} $\ast$cmd, char $\ast$raw\+\_\+cmd)
+\begin{DoxyCompactList}\small\item\em Fonction permettant d\textquotesingle{}interpréter une ligne de commande rentrer par l\textquotesingle{}utilisateur pour la transformer en plusieurs commandes. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{command_8c_ab0b4ccdc1d5d2c1f0fa34bab98dd6354}{execute\+\_\+expression}} (\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} cmd)
+\begin{DoxyCompactList}\small\item\em Fonction récursive permettant l\textquotesingle{}éxécution d\textquotesingle{}une ligne de commande. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{command_8c_a15f8d24445e70e5a8975675a2ace514a}{execute\+\_\+single\+\_\+command}} (char $\ast$const argv\mbox{[}$\,$\mbox{]}, char background)
+\begin{DoxyCompactList}\small\item\em Fonction permettant l\textquotesingle{}éxécution d\textquotesingle{}une commande. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{command_8c_ace864b90bdd238cb7454b1b1308b754d}{child\+\_\+execute\+\_\+cmd}} (char $\ast$const argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fonction permettant l\textquotesingle{}éxécution d\textquotesingle{}une commande par un processus fils. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{command_8c_afc7a820d79c50094f5f00032827e85a8}{add\+\_\+cmd}} (const char $\ast$cmd)
+\begin{DoxyCompactList}\small\item\em Fonction permettant l\textquotesingle{}écriture d\textquotesingle{}une commande dans le fichier historique. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{command_8c_a417e9e2c6561f8c2b558c50c22712672}{execute\+\_\+history}} (char background)
+\begin{DoxyCompactList}\small\item\em Fonction permettant l\textquotesingle{}éxécution de la commande \char`\"{}history\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{command_8c_a46aa899ee1c907ba2a7227058c7b4df2}{change\+\_\+directory}} (char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fonction permettant l\textquotesingle{}éxécution de la commande cd. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Fichier contenant les fonctions liés à l\textquotesingle{}interpretation et l\textquotesingle{}éxécution des commandes. 
+
+\begin{DoxyAuthor}{Author}
+Alexis V\+E\+L\+T\+EN \& Quentin DE P\+O\+T\+T\+ER 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+15 janvier 2021
+\end{DoxyDate}
+Programme regroupant les fonctionnalités du Mini-\/\+Shell 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{command_8c_afc7a820d79c50094f5f00032827e85a8}\label{command_8c_afc7a820d79c50094f5f00032827e85a8}} 
+\index{command.c@{command.c}!add\_cmd@{add\_cmd}}
+\index{add\_cmd@{add\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{add\_cmd()}{add\_cmd()}}
+{\footnotesize\ttfamily void add\+\_\+cmd (\begin{DoxyParamCaption}\item[{const char $\ast$}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant l\textquotesingle{}écriture d\textquotesingle{}une commande dans le fichier historique. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Commande voulant être ajouter dans l\textquotesingle{}historique. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{command_8c_a46aa899ee1c907ba2a7227058c7b4df2}\label{command_8c_a46aa899ee1c907ba2a7227058c7b4df2}} 
+\index{command.c@{command.c}!change\_directory@{change\_directory}}
+\index{change\_directory@{change\_directory}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{change\_directory()}{change\_directory()}}
+{\footnotesize\ttfamily void change\+\_\+directory (\begin{DoxyParamCaption}\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant l\textquotesingle{}éxécution de la commande cd. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & Liste de chaîne de caractère contenant la commande cd et ses arguments. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{command_8c_ace864b90bdd238cb7454b1b1308b754d}\label{command_8c_ace864b90bdd238cb7454b1b1308b754d}} 
+\index{command.c@{command.c}!child\_execute\_cmd@{child\_execute\_cmd}}
+\index{child\_execute\_cmd@{child\_execute\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{child\_execute\_cmd()}{child\_execute\_cmd()}}
+{\footnotesize\ttfamily int child\+\_\+execute\+\_\+cmd (\begin{DoxyParamCaption}\item[{char $\ast$const}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant l\textquotesingle{}éxécution d\textquotesingle{}une commande par un processus fils. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argv} & Liste de chaîne de caractère contenant la commande a éxécuter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne le code retour du processus fils éxécutant la commande en question. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_a13a3bf817c2b04cb971237b35b6bb9a0}\label{command_8c_a13a3bf817c2b04cb971237b35b6bb9a0}} 
+\index{command.c@{command.c}!count\_cmd@{count\_cmd}}
+\index{count\_cmd@{count\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{count\_cmd()}{count\_cmd()}}
+{\footnotesize\ttfamily int count\+\_\+cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}}}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant de compter le nombre de commande dans un objet de type pcmd\+\_\+t. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Instance d\textquotesingle{}un objet de type pcmd\+\_\+t voulant être compter \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne le nombre de commande. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_a7557ac3ca87db8175e78674676546090}\label{command_8c_a7557ac3ca87db8175e78674676546090}} 
+\index{command.c@{command.c}!create\_cmd@{create\_cmd}}
+\index{create\_cmd@{create\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{create\_cmd()}{create\_cmd()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} create\+\_\+cmd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Fonction d\textquotesingle{}initialisation d\textquotesingle{}une nouvelle instance d\textquotesingle{}un objet pcmd\+\_\+t. 
+
+\begin{DoxyReturn}{Returns}
+Nouvelle instance de type pcmd\+\_\+t. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_ad4acae431607fc93effe13568766a176}\label{command_8c_ad4acae431607fc93effe13568766a176}} 
+\index{command.c@{command.c}!destroy\_cmd@{destroy\_cmd}}
+\index{destroy\_cmd@{destroy\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{destroy\_cmd()}{destroy\_cmd()}}
+{\footnotesize\ttfamily void destroy\+\_\+cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}}}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Fonction de suppression d\textquotesingle{}une instance d\textquotesingle{}un objet pcmd\+\_\+t. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Instance d\textquotesingle{}un objet de type pcmd\+\_\+t voulant être supprimer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{command_8c_ab0b4ccdc1d5d2c1f0fa34bab98dd6354}\label{command_8c_ab0b4ccdc1d5d2c1f0fa34bab98dd6354}} 
+\index{command.c@{command.c}!execute\_expression@{execute\_expression}}
+\index{execute\_expression@{execute\_expression}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{execute\_expression()}{execute\_expression()}}
+{\footnotesize\ttfamily int execute\+\_\+expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}}}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Fonction récursive permettant l\textquotesingle{}éxécution d\textquotesingle{}une ligne de commande. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Instance d\textquotesingle{}un objet de type pcmd\+\_\+t voulant être éxécuter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne le code retour du processus éxécutant la commande en question. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_a417e9e2c6561f8c2b558c50c22712672}\label{command_8c_a417e9e2c6561f8c2b558c50c22712672}} 
+\index{command.c@{command.c}!execute\_history@{execute\_history}}
+\index{execute\_history@{execute\_history}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{execute\_history()}{execute\_history()}}
+{\footnotesize\ttfamily int execute\+\_\+history (\begin{DoxyParamCaption}\item[{char}]{background }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant l\textquotesingle{}éxécution de la commande \char`\"{}history\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em background} & Caractère permettant l\textquotesingle{}éxécution en arrière plan \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne le code retour du processus fils éxécutant la commande en question. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_a15f8d24445e70e5a8975675a2ace514a}\label{command_8c_a15f8d24445e70e5a8975675a2ace514a}} 
+\index{command.c@{command.c}!execute\_single\_command@{execute\_single\_command}}
+\index{execute\_single\_command@{execute\_single\_command}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{execute\_single\_command()}{execute\_single\_command()}}
+{\footnotesize\ttfamily int execute\+\_\+single\+\_\+command (\begin{DoxyParamCaption}\item[{char $\ast$const}]{argv\mbox{[}$\,$\mbox{]},  }\item[{char}]{background }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant l\textquotesingle{}éxécution d\textquotesingle{}une commande. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Instance d\textquotesingle{}un objet de type pcmd\+\_\+t voulant être éxécuter. \\
+\hline
+{\em cmd\+Bg} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Retourne le code retour du processus éxécutant la commande en question. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{command_8c_a6f08b1a60107da667bea7f691b6b69e4}\label{command_8c_a6f08b1a60107da667bea7f691b6b69e4}} 
+\index{command.c@{command.c}!translate\_cmd@{translate\_cmd}}
+\index{translate\_cmd@{translate\_cmd}!command.c@{command.c}}
+\doxysubsubsection{\texorpdfstring{translate\_cmd()}{translate\_cmd()}}
+{\footnotesize\ttfamily void translate\+\_\+cmd (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structcmd__t}{pcmd\+\_\+t}} $\ast$}]{cmd,  }\item[{char $\ast$}]{raw\+\_\+cmd }\end{DoxyParamCaption})}
+
+
+
+Fonction permettant d\textquotesingle{}interpréter une ligne de commande rentrer par l\textquotesingle{}utilisateur pour la transformer en plusieurs commandes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & Instance d\textquotesingle{}un objet de type pcmd\+\_\+t voulant être interpréter. \\
+\hline
+{\em raw\+\_\+cmd} & Chaîne de caractère contenant la ligne de commande. \\
+\hline
+\end{DoxyParams}
